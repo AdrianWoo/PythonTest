@@ -14,6 +14,7 @@ def run_game():
     pygame.display.set_caption("Alien Invasion")
     # 创建一艘飞船
     ship = Ship(ai_settings, screen)
+    # 创建一个存储子弹的编组
     bullets = Group()
 
     # 开始游戏的主循环
@@ -21,7 +22,7 @@ def run_game():
         gf.check_events(ai_settings, screen, ship, bullets)
         ship.update()
         # 每次循环都重新绘制屏幕
-        bullets.update()
+        gf.update_bullets(bullets)
         gf.update_screen(ai_settings, screen, ship, bullets)
 
 
