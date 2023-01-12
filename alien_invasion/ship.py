@@ -8,7 +8,7 @@ class Ship:
         self.ai_settings = ai_settings
 
         # 加载飞船并获取其外部矩形
-        self.image = pygame.image.load('images/ship.bmp')
+        self.image = pygame.image.load('../alien_invasion/images/ship.bmp')
         self.rect = self.image.get_rect()
         self.screen_rect = screen.get_rect()
         # 每艘飞船放在屏幕底部中央
