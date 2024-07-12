@@ -27,9 +27,9 @@ class AlienInvasion:
         开始游戏的主循环
         """
         while True:
-            self._check_events()
-            self._update_screen()
-            self.ship.update()
+            self._check_events()  # 事件检测
+            self._update_screen()  # 屏幕绘制
+            self.ship.update()  # 飞船移动
             # 按照每秒60次的速度运行此函数
             self.clock.tick(60)
 
@@ -39,17 +39,27 @@ class AlienInvasion:
             if event.type == pygame.QUIT:
                 sys.exit()
             elif event.type == pygame.KEYDOWN:
-                # 飞船移动
-                if event.key == pygame.K_RIGHT:
-                    self.ship.moving_right = True
-                elif event.key == pygame.K_LEFT:
-                    self.ship.moving_left = True
+                self._check_keydown_events(event)
             elif event.type == pygame.KEYUP:
-                # 飞船移动
-                if event.key == pygame.K_RIGHT:
-                    self.ship.moving_right = False
-                if event.key == pygame.K_LEFT:
-                    self.ship.moving_left = False
+                self._check_keyup_events(event)
+
+    def _check_keydown_events(self, event):
+        """按键按下事件"""
+        # 左右移动
+        if event.key == pygame.K_RIGHT:
+            self.ship.moving_right = True
+        elif event.key == pygame.K_LEFT:
+            self.ship.moving_left = True
+        elif event.key == pygame.K_q:
+            sys.exit()
+
+    def _check_keyup_events(self, event):
+        """按键抬起事件"""
+        # 停止左右移动
+        if event.key == pygame.K_RIGHT:
+            self.ship.moving_right = False
+        if event.key == pygame.K_LEFT:
+            self.ship.moving_left = False
 
     def _update_screen(self):
         """绘制屏幕"""
