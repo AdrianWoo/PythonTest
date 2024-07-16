@@ -24,7 +24,7 @@ class AlienInvasion:
         self.ship = Ship(self)
         self.bullets = pygame.sprite.Group()
         self.aliens = pygame.sprite.Group()
-        
+
         self._creat_fleet()
         pygame.display.set_caption("Alien Invasion")
 
@@ -74,28 +74,28 @@ class AlienInvasion:
             self.ship.moving_left = False
 
     def _creat_fleet(self):
-        """ 创建一个外星编队"""
+        """创建一个外星编队"""
         # 外星人的间距为外星人的宽度
         alien = Alien(self)
-        alien_width,alien_height = alien.rect.size
-        
-        current_x,current_y = alien_width,alien_height
-        while current_y < (self.settings.screen_height -3*alien_height):
+        alien_width, alien_height = alien.rect.size
+
+        current_x, current_y = alien_width, alien_height
+        while current_y < (self.settings.screen_height - 3 * alien_height):
             while current_x < (self.settings.screen_width - 2 * alien_width):
-                self._creat_alien(current_x,current_y)
+                self._creat_alien(current_x, current_y)
                 current_x += 2 * alien_width
             # 添加一行外星人后，重置x值 并递补y值
             current_x = alien_width
             current_y += 2 * alien_height
-    
-    def _creat_alien(self,x_position,y_position):
-        """ 创建一个外星人 并将其放在当前行中 """
+
+    def _creat_alien(self, x_position, y_position):
+        """创建一个外星人 并将其放在当前行中"""
         new_alien = Alien(self)
         new_alien.x = x_position
         new_alien.rect.x = x_position
         new_alien.rect.y = y_position
         self.aliens.add(new_alien)
-        
+
     def _update_screen(self):
         """绘制屏幕"""
         self.screen.fill(self.settings.bg_color)
@@ -103,17 +103,17 @@ class AlienInvasion:
             bullet.draw_bullet()
         # 绘制船
         self.ship.blitme()
-        #绘制外星人
+        # 绘制外星人
         self.aliens.draw(self.screen)
         # 绘制屏幕可见
         pygame.display.flip()
-        
+
     def _update_bullets(self):
         """更新子弹的位置并删除已消失的子弹"""
         # 更新子弹的位置
         self.bullets.update()
-        
-         #删除消失的子弹
+
+        # 删除消失的子弹
         for bullet in self.bullets.copy():
             if bullet.rect.y <= 0:
                 self.bullets.remove(bullet)
