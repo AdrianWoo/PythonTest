@@ -35,8 +35,9 @@ class AlienInvasion:
         while True:
             self._check_events()  # 事件检测
             self.ship.update()  # 飞船移动
-            self._update_bullets()
+            self._update_bullets() # 子弹绘制
             self._update_screen()  # 屏幕绘制
+            self._update_aliens()
             # 按照每秒60次的速度运行此函数
             self.clock.tick(60)
 
@@ -80,8 +81,8 @@ class AlienInvasion:
         alien_width, alien_height = alien.rect.size
 
         current_x, current_y = alien_width, alien_height
-        while current_y < (self.settings.screen_height - 3 * alien_height):
-            while current_x < (self.settings.screen_width - 2 * alien_width):
+        while current_y < (self.settings.screen_height - 3 * alien_height): # 循环高度 用来创建多排
+            while current_x < (self.settings.screen_width - 2 * alien_width): # 循环宽度 用来创建多个
                 self._creat_alien(current_x, current_y)
                 current_x += 2 * alien_width
             # 添加一行外星人后，重置x值 并递补y值
@@ -117,6 +118,10 @@ class AlienInvasion:
         for bullet in self.bullets.copy():
             if bullet.rect.y <= 0:
                 self.bullets.remove(bullet)
+    
+    def _update_aliens(self):
+        """更新外星舰队中所有外星人的位置"""
+        self.aliens.update()
 
 
 if __name__ == "__main__":
