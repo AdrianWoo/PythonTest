@@ -3,6 +3,7 @@ import pygame
 from settings import Settings
 from ship import Ship
 from bullet import Bullet
+from alien import Alien
 
 
 class AlienInvasion:
@@ -22,6 +23,9 @@ class AlienInvasion:
         # 主窗体增加一个船
         self.ship = Ship(self)
         self.bullets = pygame.sprite.Group()
+        self.aliens = pygame.sprite.Group()
+        
+        self._creat_fleet()
         pygame.display.set_caption("Alien Invasion")
 
     def run_game(self):
@@ -69,6 +73,12 @@ class AlienInvasion:
         if event.key == pygame.K_LEFT:
             self.ship.moving_left = False
 
+    def _creat_fleet(self):
+        """ 创建一个外星编队"""
+        # 创建一个外星人
+        alien = Alien(self)
+        self.aliens.add(alien)
+        
     def _update_screen(self):
         """绘制屏幕"""
         self.screen.fill(self.settings.bg_color)
@@ -76,6 +86,8 @@ class AlienInvasion:
             bullet.draw_bullet()
         # 绘制船
         self.ship.blitme()
+        #绘制外星人
+        self.aliens.draw(self.screen)
         # 绘制屏幕可见
         pygame.display.flip()
         
