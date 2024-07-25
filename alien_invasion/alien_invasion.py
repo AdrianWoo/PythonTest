@@ -8,6 +8,7 @@ from game_stats import GameStats
 from ship import Ship
 from bullet import Bullet
 from alien import Alien
+from button import Button
 
 
 class AlienInvasion:
@@ -18,7 +19,8 @@ class AlienInvasion:
         初始化游戏并创建运行资源
         """
         pygame.init()
-        self.game_active = False # 让游戏处于非活跃状态
+      
+
         self.clock = pygame.time.Clock()  # 创建一个时钟用来控制帧率
         self.settings = Settings()
         self.screen = pygame.display.set_mode(
@@ -33,7 +35,8 @@ class AlienInvasion:
 
         self._creat_fleet()
         pygame.display.set_caption("Alien Invasion")
-        self.game_active = True # 启动后游戏属于活跃状态
+        self.game_active = False  # 启动后游戏属于停止状态
+        self.play_button = Button(self, "Play") # 绘制按钮在屏幕上
 
     def run_game(self):
         """
@@ -41,14 +44,14 @@ class AlienInvasion:
         """
         while True:
             self._check_events()  # 事件检测
-        
+
             if self.game_active:
                 self.ship.update()  # 飞船移动
                 self._update_bullets()  # 子弹绘制
-                self._update_aliens() # 外星人绘制
+                self._update_aliens()  # 外星人绘制
             # 按照每秒60次的速度运行此函数
             self._update_screen()  # 屏幕绘制
-            self.clock.tick(60)     # 游戏帧率
+            self.clock.tick(60)  # 游戏帧率
 
     def _check_events(self):
         """监听鼠标和键盘事件"""
@@ -119,6 +122,9 @@ class AlienInvasion:
         self.ship.blitme()
         # 绘制外星人
         self.aliens.draw(self.screen)
+        # 如果游戏状态不活跃的话 绘制按钮
+        if self.game_active == False:
+            self.play_button.draw_button()
         # 绘制屏幕可见
         pygame.display.flip()
 
@@ -147,8 +153,8 @@ class AlienInvasion:
         """更新外星舰队中所有外星人的位置"""
         self._check_fleet_edges()
         self.aliens.update()
-        
-        if pygame.sprite.spritecollideany(self.ship,self.aliens): # type: ignore
+
+        if pygame.sprite.spritecollideany(self.ship, self.aliens):  # type: ignore
             self._ship_hit()
         # 检测是否到底部
         self._check_aliens_bottom()
@@ -165,28 +171,28 @@ class AlienInvasion:
         for alien in self.aliens.sprites():
             alien.rect.y += self.settings.fleet_drop_speed
         self.settings.fleet_direction *= -1  # 通过-1 改变移动方向
-        
+
     def _ship_hit(self):
         """检测飞船碰撞"""
         # 判断游戏终结的时候
         if self.stats.ships_left >= 1:
             self.stats.ships_left -= 1
-            
+
             # 清空外星人和子弹列表
             self.bullets.empty()
             self.aliens.empty()
-            
+
             # 创建一个新的舰队，将飞船放在屏幕中央
             self._creat_fleet()
             self.ship.center_ship()
-            
+
             # 暂停
             sleep(0.5)
         else:
             self.game_active = False
-    
+
     def _check_aliens_bottom(self):
-        """ 检测 是否接触到底部"""
+        """检测 是否接触到底部"""
         for alien in self.aliens.sprites():
             if alien.rect.bottom >= self.settings.screen_height:
                 # 到达边缘底部就像碰到飞船一样处理
