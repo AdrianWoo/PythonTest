@@ -70,6 +70,7 @@ class AlienInvasion:
         """ 玩家点击按钮开始游戏 """
         button_click = self.play_button.rect.collidepoint(mouse_pos)
         if button_click and not self.game_active:
+            self.settings.initialize_dynamic_settings() # 还原游戏的设置
             self.stats.reset_stats()
             self.game_active = True
             
@@ -157,7 +158,7 @@ class AlienInvasion:
         self._check_bullet_alien_collision()
 
     def _check_bullet_alien_collision(self):
-        # 检查是否有子弹击中了外星人
+        """ 检查是否有子弹击中了外星人"""
         # 如果有，就删除相应的子弹和外星人
         collisions = pygame.sprite.groupcollide(self.bullets, self.aliens, True, True)
 
@@ -165,6 +166,7 @@ class AlienInvasion:
             # 删除现有的子弹并创建一个新的外星舰队
             self.bullets.empty()
             self._creat_fleet
+            self.settings.increase_speed()
 
     def _update_aliens(self):
         """更新外星舰队中所有外星人的位置"""
