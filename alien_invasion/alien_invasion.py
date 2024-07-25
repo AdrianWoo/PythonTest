@@ -148,7 +148,7 @@ class AlienInvasion:
         self._check_fleet_edges()
         self.aliens.update()
         
-        if pygame.sprite.spritecollide(self.ship,self.aliens):
+        if pygame.sprite.spritecollideany(self.ship,self.aliens): # type: ignore
             self._ship_hit()
         # 检测是否到底部
         self._check_aliens_bottom()
