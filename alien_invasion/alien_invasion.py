@@ -18,7 +18,7 @@ class AlienInvasion:
         初始化游戏并创建运行资源
         """
         pygame.init()
-
+        self.game_active = False # 让游戏处于非活跃状态
         self.clock = pygame.time.Clock()  # 创建一个时钟用来控制帧率
         self.settings = Settings()
         self.screen = pygame.display.set_mode(
